@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/spark-core_2.10.iml" filepath="$PROJECT_DIR$/spark-core_2.10.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spark-core_2.10 (1).iml" filepath="$PROJECT_DIR$/spark-core_2.10 (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/spark-core_2.10 (2).iml" filepath="$PROJECT_DIR$/spark-core_2.10 (2).iml" />
     </modules>
   </component>
 </project>

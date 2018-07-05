@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="Maven 1" modules="spark-core_2.10">
+    <profile name="Maven 1" modules="spark-core_2.10 (1)">
       <option name="deprecationWarnings" value="true" />
       <option name="uncheckedWarnings" value="true" />
       <option name="featureWarnings" value="true" />
       <plugins>
-        <plugin path="C:\Users\ZX\.m2\repository\org\scalamacros\paradise_2.10.4\2.0.1\paradise_2.10.4-2.0.1.jar" />
+        <plugin path="$MAVEN_REPOSITORY$/org/scalamacros/paradise_2.10.4/2.0.1/paradise_2.10.4-2.0.1.jar" />
       </plugins>
     </profile>
   </component>

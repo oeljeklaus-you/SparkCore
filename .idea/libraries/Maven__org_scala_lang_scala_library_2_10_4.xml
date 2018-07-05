@@ -1,7 +1,6 @@
 <component name="libraryTable">
   <library name="Maven: org.scala-lang:scala-library:2.10.4" type="Scala">
     <properties>
-      <option name="languageLevel" value="Scala_2_10" />
       <compiler-classpath>
         <root url="file://$MAVEN_REPOSITORY$/org/scala-lang/scala-compiler/2.10.4/scala-compiler-2.10.4.jar" />
         <root url="file://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.10.4/scala-library-2.10.4.jar" />
