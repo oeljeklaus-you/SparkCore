@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <unzip src="../python/lib/py4j-0.8.2.1-src.zip" dest="../python/build"/>
+</target>
+</project>
