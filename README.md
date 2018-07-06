@@ -3,9 +3,9 @@
 
 如果不了解的可以看一下我的Demo,点击这里[SPRC](https://github.com/oeljeklaus-you/SPRC) ,这里主要进行的源码分析是:Spark集群启动的脚本、Spark作业
 
-提交的脚本、Spark作业提交中SparkContext、Spark中SparkContext、Executor进程启动的流程、结合简单的WordCount程序对于RDD执行流程进行剖析以及进行
+提交的脚本、Spark作业提交中SparkContext、Spark中SparkContext、Executor进程启动的流程、结合简单的WordCount程序对于RDD执行流程进行剖析以及
 
-Stage划分分析和Task提交。
+进行Stage划分分析和Task提交。
 ## 启动的脚本
 在分析源代码以前,需要首先了解Spark启动脚本做了什么?如果了解这部分流程,这里直接跳过，需要详细了解的可以点击这里查看:
 [Spark启动脚本详解](https://github.com/oeljeklaus-you/SparkCore/blob/master/md/Spark启动脚本详解.md)
