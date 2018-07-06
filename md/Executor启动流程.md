@@ -229,7 +229,7 @@ main()方法是启动Executor子进程的入口,然后调用run()方法，这里
       }.toSeq))
     }
 </code></pre> 
-我们接下来继续追踪launchTasks()方法这里有一个阻塞队列,当有任务的时候执行任务, 否则就一直阻塞。
+这个方法主要是查看是否有任务需要提交(DriverActor->Executor)
 
 ## 百度脑图关于Executor启动
 ![创建Executor进程](../image/CoarseGrainedExecutorBackend.png)
@@ -241,4 +241,4 @@ main()方法是启动Executor子进程的入口,然后调用run()方法，这里
 
 2.CoarseGrainedExecutorBackend向DriverActor注册成功后创建Executor对象,内部有一个可变的线程池
 
-3.执行makeOffers()方法，内部又一个阻塞队列用于Task的执行
+3.执行makeOffers()方法，查看是否有任务需要提交
