@@ -16,13 +16,13 @@ object WordCount
   }
 }
 </code></pre> 
-主要是从HDFS读取文件后进行单词切割,然后进行计数,如果不懂RDD算子可以看[RDD详解](https://github.com/oeljeklaus-you/SPRC)
+主要是从HDFS读取文件后进行单词切割,然后进行计数,如果不懂RDD算子可以看[RDD详解](https://github.com/oeljeklaus-you/SparkCore/blob/master/md/RDD详解.md)
 ## WordCount的各个算子
-![WordCount的RDD依赖](image/WordCount的RDD依赖.png)
+![WordCount的RDD依赖](../image/WordCount的RDD依赖.png)
 ## SparkRDD的运行流程
-![RDD运行流程](image/RDD运行流程.png)
+![RDD运行流程](../image/RDD运行流程.png)
 ## SparkRDD宽依赖和窄依赖
-![RDD运行流程](image/SparkRDD的依赖关系.png)
+![RDD运行流程](../image/SparkRDD的依赖关系.png)
 
 SparkRDD之间的依赖主要有:
 
@@ -144,9 +144,13 @@ RDD同样是MapPartitionRDD,最主要的是看saveAsTextFile()方法。
     writer.commitJob()
 </code></pre>
 代码解析:
+
 1.获取写入HDFS中的文件流
+
 2.一个函数将分区数据迭代的写入到HDFS中
+
 3.开始提交作业,Self表示Final RDD也就是作业最后的RDD在WordCount中也就是MapPartitionsRDD
+
 这里我们将会追踪到runJob()方法中,
 <pre><code>
 //TODO 将最后一个RDD和一个函数(writeToFile)传入到该方法中
@@ -297,11 +301,17 @@ RDD同样是MapPartitionRDD,最主要的是看saveAsTextFile()方法。
   }
 </code></pre>
 stage划分算法如下:
+
 涉及的数据结构:栈、HashSet
+
 1.通过最后的RDD,获取父RDD
+
 2.将finalRDD放入栈中,然后出栈,进行for循环的找到RDD的依赖,需要注意的是RDD可能有多个依赖
+
 3.如果RDD依赖是ShuffleDependency,那么就可以划分成为一个新的Stage,然后通过getShuffleMapStage()获取这个stage的父stage;如果是一般的窄依赖,那么将会入栈
+
 4.通过getShuffleMapStage()递归调用,得到父stage;一直到父stage是null
+
 5.最后返回stage的集合
 
 ### stage提交算法
@@ -369,10 +379,14 @@ ResultTask:将结果写入持久化介质.比如HDFS等。
 这里将Task进行封装成为TaskSet进行提交给taskScheduler。
 
 ## 关于Stage划分流程图
-![Stage划分流程](image/Stage划分流程.png)
+![Stage划分流程](../image/Stage划分流程.png)
 ## 总结
 1.textFile()方法会产生两个RDD,HadoopRDD和MapPartitionRDD
+
 2.saveTextAsFile()方法会产生一个RDD,MapPartitionRDD
+
 3.Task数量取决于HDFS分区数量
+
 4.Stage划分是通过最后的RDD,也就是final RDD根据依赖关系进行递归划分
+
 5.stage提交主要是通过递归算法,根据最后一个Stage划分然后递归找到第一个stage开始从第一个stage开始提交。
