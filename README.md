@@ -91,3 +91,5 @@ Task如何提交到Executor执行。
 1.提交Task主要是迭代TaskSet一个一个的取出Task进行序列化之后向Executor发送序列化好的Task
 
 2.Executor执行Task,创建一个TaskRunner对象将Task的信息封装信息然后使用线程池执行
+
+## Spark2.0新特性
