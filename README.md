@@ -63,7 +63,7 @@
 
 2.CoarseGrainedExecutorBackend向DriverActor注册成功后创建Executor对象,内部有一个可变的线程池
 
-3.执行makeOffers()方法，内部又一个阻塞队列用于Task的执行
+3.执行makeOffers()方法，查看是否有任务需要提交
 ## 结合WordCount的Stage划分
 关于WordCount的划分，这里结合了一个简单的案例WordCount进行分析，如果想详细了解Stage划分的过程，可以点击
 
