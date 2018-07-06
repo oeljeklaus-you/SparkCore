@@ -1,4 +1,5 @@
 # Executor启动流程
+
 在上面SparkContext进行资源调度后,只有主要的流程是Master和筛选出来的Worker进行通信,然后在Worker中启动Executor进程。
 
 ## 源码分析
@@ -229,7 +230,7 @@ main()方法是启动Executor子进程的入口,然后调用run()方法，这里
 我们接下来继续追踪launchTasks()方法这里有一个阻塞队列,当有任务的时候执行任务, 否则就一直阻塞。
 
 ## 百度脑图关于Executor启动
-![创建Executor进程](image/CoarseGrainedExecutorBackend.png)
+![创建Executor进程](../image/CoarseGrainedExecutorBackend.png)
 
 ## 总结
 创建Executor进程的总结:
