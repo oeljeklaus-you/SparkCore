@@ -131,7 +131,7 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val actorSyste
                 "from unknown executor $sender with ID $executorId")
           }
         }
-
+         //TODO 进行模式匹配，调用makeOffers()向Executor提交Task
       case ReviveOffers =>
         makeOffers()
 
@@ -168,6 +168,7 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val actorSyste
     }
 
     // Make fake resource offers on all executors
+    //TODO 调用launchTasks向Executor提交Task
     def makeOffers() {
       launchTasks(scheduler.resourceOffers(executorDataMap.map { case (id, executorData) =>
         new WorkerOffer(id, executorData.executorHost, executorData.freeCores)
@@ -182,10 +183,15 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val actorSyste
     }
 
     // Launch tasks returned by a set of resource offers
+    //TODO
     def launchTasks(tasks: Seq[Seq[TaskDescription]]) {
+      //TODO Task是一个一个发送给Executor的
       for (task <- tasks.flatten) {
+        //TODO 首先拿到序列化器
         val ser = SparkEnv.get.closureSerializer.newInstance()
+        //TODO 将Task序列化用来进行网络传输
         val serializedTask = ser.serialize(task)
+        //TODO  进行大小判断
         if (serializedTask.limit >= akkaFrameSize - AkkaUtils.reservedSizeBytes) {
           val taskSetId = scheduler.taskIdToTaskSetId(task.taskId)
           scheduler.activeTaskSets.get(taskSetId).foreach { taskSet =>
@@ -202,8 +208,10 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val actorSyste
           }
         }
         else {
+          //TODO 这是一个HashMap
           val executorData = executorDataMap(task.executorId)
           executorData.freeCores -= scheduler.CPUS_PER_TASK
+          //TODO 向Executor发送序列化好的Task
           executorData.executorActor ! LaunchTask(new SerializableBuffer(serializedTask))
         }
       }
@@ -272,6 +280,7 @@ class CoarseGrainedSchedulerBackend(scheduler: TaskSchedulerImpl, val actorSyste
     }
   }
 
+  //TODO 向DriverActor发送消息
   override def reviveOffers() {
     driverActor ! ReviveOffers
   }

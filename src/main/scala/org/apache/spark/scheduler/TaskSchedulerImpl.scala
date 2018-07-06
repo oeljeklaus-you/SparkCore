@@ -120,6 +120,7 @@ private[spark] class TaskSchedulerImpl(
     this.dagScheduler = dagScheduler
   }
 
+  //TODO 初始化任务调度器
   def initialize(backend: SchedulerBackend) {
     this.backend = backend
     // temporarily set rootPool name to empty
@@ -155,6 +156,7 @@ private[spark] class TaskSchedulerImpl(
     waitBackendReady()
   }
 
+  //TODO 该方法提交TaskSet
   override def submitTasks(taskSet: TaskSet) {
     val tasks = taskSet.tasks
     logInfo("Adding task set " + taskSet.id + " with " + tasks.length + " tasks")
@@ -178,6 +180,7 @@ private[spark] class TaskSchedulerImpl(
       }
       hasReceivedTask = true
     }
+    //TODO  CoarseGrainedSchedulerBackend类的reviveOffers()
     backend.reviveOffers()
   }
 

@@ -120,15 +120,19 @@ private[spark] class Executor(
   //TODO 和Dirver进行通信，发送心跳信息，这是一个报活的操作
   startDriverHeartbeater()
 
+  //TODO Executor执行Task
   def launchTask(
       context: ExecutorBackend,
       taskId: Long,
       attemptNumber: Int,
       taskName: String,
       serializedTask: ByteBuffer) {
+    //TODO 创建一个TaskRunner对象将Task的信息封装信息
     val tr = new TaskRunner(context, taskId = taskId, attemptNumber = attemptNumber, taskName,
       serializedTask)
+    //TODO runningTasks是一个ConcurrentHashMap保证线程安全
     runningTasks.put(taskId, tr)
+    //TODO 使用线程池执行
     threadPool.execute(tr)
   }
 
@@ -173,6 +177,7 @@ private[spark] class Executor(
       }
     }
 
+    //TODO 这个线程进行start()方法后进行一下的逻辑
     override def run() {
       val deserializeStartTime = System.currentTimeMillis()
       Thread.currentThread.setContextClassLoader(replClassLoader)
@@ -203,6 +208,7 @@ private[spark] class Executor(
 
         // Run the actual task and measure its runtime.
         taskStart = System.currentTimeMillis()
+        //TODO 调用Task的逻辑
         val value = task.run(taskAttemptId = taskId, attemptNumber = attemptNumber)
         val taskFinish = System.currentTimeMillis()
 

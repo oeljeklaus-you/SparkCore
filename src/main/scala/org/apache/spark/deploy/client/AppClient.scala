@@ -192,7 +192,7 @@ private[spark] class AppClient(
 
   def start() {
     // Just launch an actor; it will call back into the listener.
-    //TODO 创建ClientActor调用主构造器 -》preStart -》 receive
+    //TODO 创建ClientActor调用主构造器 ->preStart -> receive
     actor = actorSystem.actorOf(Props(new ClientActor))
   }
 

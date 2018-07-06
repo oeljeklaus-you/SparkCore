@@ -936,6 +936,7 @@ class PairRDDFunctions[K, V](self: RDD[(K, V)])
     // TODO: Should we uncomment this for Scala 2.10?
     // conf.setOutputFormat(outputFormatClass)
     hadoopConf.set("mapred.output.format.class", outputFormatClass.getName)
+    //TODO 准备一下Hadoop参数
     for (c <- codec) {
       hadoopConf.setCompressMapOutput(true)
       hadoopConf.set("mapred.output.compress", "true")
@@ -951,6 +952,7 @@ class PairRDDFunctions[K, V](self: RDD[(K, V)])
 
     FileOutputFormat.setOutputPath(hadoopConf,
       SparkHadoopWriter.createPathFromString(path, hadoopConf))
+    //TODO saveAsHadoopDataset
     saveAsHadoopDataset(hadoopConf)
   }
 
@@ -1026,6 +1028,7 @@ class PairRDDFunctions[K, V](self: RDD[(K, V)])
    * (e.g. a table name to write to) in the same way as it would be configured for a Hadoop
    * MapReduce job.
    */
+  //TODO 将结果写入到HDFS中
   def saveAsHadoopDataset(conf: JobConf) {
     // Rename this as hadoopConf internally to avoid shadowing (see SPARK-2038).
     val hadoopConf = conf
@@ -1053,9 +1056,11 @@ class PairRDDFunctions[K, V](self: RDD[(K, V)])
       hadoopConf.getOutputFormat.checkOutputSpecs(ignoredFs, hadoopConf)
     }
 
+    //TODO 拿到写入HDFS中的文件流
     val writer = new SparkHadoopWriter(hadoopConf)
     writer.preSetup()
 
+    //TODO 一个函数将分区数据迭代的写入到HDFS中
     val writeToFile = (context: TaskContext, iter: Iterator[(K, V)]) => {
       val config = wrappedConf.value
       // Hadoop wants a 32-bit task attempt ID, so if ours is bigger than Int.MaxValue, roll it
@@ -1084,6 +1089,7 @@ class PairRDDFunctions[K, V](self: RDD[(K, V)])
       outputMetrics.setRecordsWritten(recordsWritten)
     }
 
+    //TODO 开始提交作业,Self表示Final RDD也就是作业最后的RDD在WordCount中也就是MapPartitionsRDD
     self.context.runJob(self, writeToFile)
     writer.commitJob()
   }

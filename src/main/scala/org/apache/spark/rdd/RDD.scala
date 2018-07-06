@@ -282,6 +282,8 @@ abstract class RDD[T: ClassTag](
   /**
    * Return a new RDD by applying a function to all elements of this RDD.
    */
+
+  //TODO 记住父类的RDD，this表示父类RDD
   def map[U: ClassTag](f: T => U): RDD[U] = {
     val cleanF = sc.clean(f)
     new MapPartitionsRDD[U, T](this, (context, pid, iter) => iter.map(cleanF))
@@ -291,6 +293,7 @@ abstract class RDD[T: ClassTag](
    *  Return a new RDD by first applying a function to all elements of this
    *  RDD, and then flattening the results.
    */
+  //TODO 记住父类的RDD，this表示父类RDD
   def flatMap[U: ClassTag](f: T => TraversableOnce[U]): RDD[U] = {
     val cleanF = sc.clean(f)
     new MapPartitionsRDD[U, T](this, (context, pid, iter) => iter.flatMap(cleanF))
@@ -1266,6 +1269,7 @@ abstract class RDD[T: ClassTag](
   /**
    * Save this RDD as a text file, using string representations of elements.
    */
+  //TODO 保存结果
   def saveAsTextFile(path: String) {
     // https://issues.apache.org/jira/browse/SPARK-2075
     //
@@ -1279,6 +1283,7 @@ abstract class RDD[T: ClassTag](
     // same bytecodes for `saveAsTextFile`.
     val nullWritableClassTag = implicitly[ClassTag[NullWritable]]
     val textClassTag = implicitly[ClassTag[Text]]
+    //TODO 最后写入到HDFS中还会产生一个RDD,MapPartitionsRDD
     val r = this.mapPartitions { iter =>
       val text = new Text()
       iter.map { x =>
@@ -1286,6 +1291,7 @@ abstract class RDD[T: ClassTag](
         (NullWritable.get(), text)
       }
     }
+    //TODO saveAsHadoopFile
     RDD.rddToPairRDDFunctions(r)(nullWritableClassTag, textClassTag, null)
       .saveAsHadoopFile[TextOutputFormat[NullWritable, Text]](path)
   }

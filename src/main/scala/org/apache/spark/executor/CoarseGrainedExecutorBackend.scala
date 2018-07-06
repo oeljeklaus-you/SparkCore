@@ -76,15 +76,18 @@ private[spark] class CoarseGrainedExecutorBackend(
     case RegisterExecutorFailed(message) =>
       logError("Slave registration failed: " + message)
       System.exit(1)
-
+      //TODO Driver 发送数据给Executor的信息
     case LaunchTask(data) =>
       if (executor == null) {
         logError("Received LaunchTask command but executor was null")
         System.exit(1)
       } else {
+        //TODO 拿到序列化器
         val ser = env.closureSerializer.newInstance()
+        //TODO 将Task反序列化
         val taskDesc = ser.deserialize[TaskDescription](data.value)
         logInfo("Got assigned task " + taskDesc.taskId)
+        //TODO 将反序列化的Task放入线程池执行
         executor.launchTask(this, taskId = taskDesc.taskId, attemptNumber = taskDesc.attemptNumber,
           taskDesc.name, taskDesc.serializedTask)
       }

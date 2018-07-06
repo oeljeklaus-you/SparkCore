@@ -101,11 +101,13 @@ object SparkSubmit {
     exitFn()
   }
 
+  //TODO 程序执行的主入口，然后根据提交参数的类型进行模式匹配
   def main(args: Array[String]): Unit = {
     val appArgs = new SparkSubmitArguments(args)
     if (appArgs.verbose) {
       printStream.println(appArgs)
     }
+    //TODO 进行模式匹配,这里主要看submit用例类
     appArgs.action match {
       case SparkSubmitAction.SUBMIT => submit(appArgs)
       case SparkSubmitAction.KILL => kill(appArgs)
@@ -535,6 +537,7 @@ object SparkSubmit {
     var mainClass: Class[_] = null
 
     try {
+      //TODO 通过反射出我们的类
       mainClass = Class.forName(childMainClass, true, loader)
     } catch {
       case e: ClassNotFoundException =>
@@ -565,6 +568,7 @@ object SparkSubmit {
         e
     }
 
+    //TODO 通过反射调用WordCount的main()方法
     try {
       mainMethod.invoke(null, childArgs.toArray)
     } catch {

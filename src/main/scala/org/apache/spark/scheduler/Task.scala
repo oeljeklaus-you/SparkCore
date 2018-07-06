@@ -20,9 +20,10 @@ package org.apache.spark.scheduler
 import java.io.{ByteArrayOutputStream, DataInputStream, DataOutputStream}
 import java.nio.ByteBuffer
 
-import scala.collection.mutable.HashMap
+import com.sun.xml.internal.bind.v2.TODO
 
-import org.apache.spark.{TaskContextHelper, TaskContextImpl, TaskContext}
+import scala.collection.mutable.HashMap
+import org.apache.spark.{TaskContext, TaskContextHelper, TaskContextImpl}
 import org.apache.spark.executor.TaskMetrics
 import org.apache.spark.serializer.SerializerInstance
 import org.apache.spark.util.ByteBufferInputStream
@@ -51,6 +52,7 @@ private[spark] abstract class Task[T](val stageId: Int, var partitionId: Int) ex
    * @param attemptNumber how many times this task has been attempted (0 for the first attempt)
    * @return the result of the task
    */
+  //TODO 执行Task的run()方法
   final def run(taskAttemptId: Long, attemptNumber: Int): T = {
     context = new TaskContextImpl(stageId = stageId, partitionId = partitionId,
       taskAttemptId = taskAttemptId, attemptNumber = attemptNumber, runningLocally = false)
@@ -61,6 +63,7 @@ private[spark] abstract class Task[T](val stageId: Int, var partitionId: Int) ex
       kill(interruptThread = false)
     }
     try {
+      //TODO 调用具体的实现类的方法
       runTask(context)
     } finally {
       context.markTaskCompleted()

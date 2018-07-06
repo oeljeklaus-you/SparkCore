@@ -598,6 +598,7 @@ class SparkContext(config: SparkConf) extends Logging with ExecutorAllocationCli
    * Read a text file from HDFS, a local file system (available on all nodes), or any
    * Hadoop-supported file system URI, and return it as an RDD of Strings.
    */
+  // TODO 创建一个HadoopRDD
   def textFile(path: String, minPartitions: Int = defaultMinPartitions): RDD[String] = {
     assertNotStopped()
     hadoopFile(path, classOf[TextInputFormat], classOf[LongWritable], classOf[Text],
@@ -763,6 +764,7 @@ class SparkContext(config: SparkConf) extends Logging with ExecutorAllocationCli
    * If you plan to directly cache, sort, or aggregate Hadoop writable objects, you should first
    * copy them using a `map` function.
    */
+  //TODO 返回一个HadoopRDD
   def hadoopFile[K, V](
       path: String,
       inputFormatClass: Class[_ <: InputFormat[K, V]],
@@ -1462,6 +1464,7 @@ class SparkContext(config: SparkConf) extends Logging with ExecutorAllocationCli
    * flag specifies whether the scheduler can run the computation on the driver rather than
    * shipping it out to the cluster, for short actions like first().
    */
+  //TODO 重要:这个方法开始进行Stage划分
   def runJob[T, U: ClassTag](
       rdd: RDD[T],
       func: (TaskContext, Iterator[T]) => U,
@@ -1477,6 +1480,7 @@ class SparkContext(config: SparkConf) extends Logging with ExecutorAllocationCli
     if (conf.getBoolean("spark.logLineage", false)) {
       logInfo("RDD's recursive dependencies:\n" + rdd.toDebugString)
     }
+    //TODO 将Stage划分后转化为TaskSet提交给TaskScheduler在交个Executor执行
     dagScheduler.runJob(rdd, cleanedFunc, partitions, callSite, allowLocal,
       resultHandler, localProperties.get)
     progressBar.foreach(_.finishAll())
@@ -1488,6 +1492,7 @@ class SparkContext(config: SparkConf) extends Logging with ExecutorAllocationCli
    * allowLocal flag specifies whether the scheduler can run the computation on the driver rather
    * than shipping it out to the cluster, for short actions like first().
    */
+  //TODO rdd是finalRDD
   def runJob[T, U: ClassTag](
       rdd: RDD[T],
       func: (TaskContext, Iterator[T]) => U,
@@ -1495,6 +1500,7 @@ class SparkContext(config: SparkConf) extends Logging with ExecutorAllocationCli
       allowLocal: Boolean
       ): Array[U] = {
     val results = new Array[U](partitions.size)
+    //TODO 调用重载的runJob()方法
     runJob[T, U](rdd, func, partitions, allowLocal, (index, res) => results(index) = res)
     results
   }
@@ -1515,7 +1521,9 @@ class SparkContext(config: SparkConf) extends Logging with ExecutorAllocationCli
   /**
    * Run a job on all partitions in an RDD and return the results in an array.
    */
+  //TODO 将最后一个RDD和一个函数(writeToFile)传入到该方法中
   def runJob[T, U: ClassTag](rdd: RDD[T], func: (TaskContext, Iterator[T]) => U): Array[U] = {
+    //TODO 将分区数量取出来
     runJob(rdd, func, 0 until rdd.partitions.size, false)
   }
 
