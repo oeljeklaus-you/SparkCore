@@ -1,7 +1,7 @@
 # SparkContext内部执行流程
 ## SparkContext内部执行的时序图
 
-![SparkSubmit的大概流程](image/SparkSubmit的大概流程.jpg)
+![SparkSubmit的大概流程](../image/SparkSubmit的大概流程.jpg)
 
 对于这个时序图的具体描述如下:
 
@@ -136,10 +136,15 @@ private[spark] def submit(args: SparkSubmitArguments): Unit = {
 调用WordCount的main()方法后,接下来就要看SparkContext的内部了。
 ### 2.SparkContext内部源码分析
 很重要：SparkContext是Spark提交任务到集群的入口
+
 我们看一下SparkContext的主构造器
+
 1.调用createSparkEnv方法创建SparkEnv，里面有一个非常重要的对象ActorSystem
+
 2.创建TaskScheduler -> 根据提交任务的URL进行匹配 -> TaskSchedulerImpl -> SparkDeploySchedulerBackend(里面有两个Actor)
+
 3.创建DAGScheduler
+
 **2.1创建SparkEnv获取ActorSystem,代码大约在275行左右**,这一步的主要的作用是**创建ActorSystem对象以后根据这个对象来创建相应的Actor**
 <pre><code>
  //TODO 该方法创建了一个SparkEnv
@@ -274,6 +279,7 @@ override def start() {
   }
 </code></pre>
 主要调用了SparkDeploySchedulerBackend的start()方法,接下来我们需要看SparkDeploySchedulerBackend内部实现。
+
 以下是SparkDeploySchedulerBackend的构造器函数,**这个代码大约在SparkDeploySchedulerBackend的45行**重要的代码如下:
 <pre><code>
  override def start() {
@@ -330,11 +336,13 @@ override def start() {
     waitForRegistration()
   }
 </code></pre>
-从上面的代码可以看出首先调用父类(**CoarseGrainedSchedulerBackend**)的start()方法,然后对于一些重要的参数进行封装,这里最重要的参数是CoarseGrainedExecutorBackend
+从上面的代码可以看出首先调用父类(**CoarseGrainedSchedulerBackend**)的start()方法,然后对于一些重要的参数进行封装,这里最重要的参数是
 
-类，还有一些driverUrl和WORKER_URL等参数的封装,将CoarseGrainedExecutorBackend封装成Command,这是一个样例类,不知道样例类[请点击这里](https://github.com/oeljeklaus-you/SPRC),
+CoarseGrainedExecutorBackend类，还有一些driverUrl和WORKER_URL等参数的封装,将CoarseGrainedExecutorBackend封装成Command,这是一个样例类,不知道
 
-将这个参数封装成为一个ApplicationDescription对象，创建一个AppClient对象,这个对象主要用于Driver和Master之间的通信,以下我们分析start()方法后再分析client.start()。
+样例类[请点击这里](https://blog.csdn.net/oeljeklaus/article/details/80559180),将这个参数封装成为一个ApplicationDescription对象，创建一个
+
+AppClient对象,这个对象主要用于Driver和Master之间的通信,以下我们分析start()方法后再分析client.start()。
 <pre><code>
 override def start() {
     val properties = new ArrayBuffer[(String, String)]
@@ -351,7 +359,9 @@ override def start() {
 </code></pre>
 可以从上面的代码看出, **这里主要创建一个DriverActor，这个Actor的主要的作用是Driver进程和Executor进程进行RPC通信**
 
-在分析完以上的CoarseGrainedSchedulerBackend的start()方法后,这里主要进行的源码分析是client.start()方法这里创建一个ClientActor,准确来说是这个ClientActor来和Master通信。
+在分析完以上的CoarseGrainedSchedulerBackend的start()方法后,这里主要进行的源码分析是client.start()方法这里创建一个ClientActor,准确来说是这个
+
+ClientActor来和Master通信。
 
 现在,这里就调用ClientActor的生命周期方法，对于Akka通信不了解的,[请点击这里](https://github.com/oeljeklaus-you/SPRC)进行了解Actor的生命周期方法。
 
@@ -431,6 +441,7 @@ Master收到通过样例类的模式匹配,对于Driver向Master注册Applicatio
     }
 </code></pre>
 这段代码的意义是:持久化信息,告知ClientActor发送注册成功的信息,然后适使用schedule()进行资源的调度。
+
 对于schedule()方法，代码大约在533行,这里的主要作用是**进行资源调度,主要的是两种资源调度的方法,一种是尽量打散的分配资源,还有一种是尽量集中**。
 <pre><code>
  //TODO 下面是两种调度方式，一中是尽量打散，另一种是尽量集中
@@ -522,7 +533,7 @@ DriverActor会创建executorData（executor信息）加入executorDataMap供后�
 Executor是直接用于task执行， 是集群中的直接劳动者。至此，资源分配结束。
 
 ## 百度脑图关于作业提交以及SparkContext的示意图
-![SparkContext的执行示例](SparkContext.png)
+![SparkContext的执行示例](../image/SparkContext.png)
 
 注意:这里的SparkContext和Master是两个独立的类,由于Baidu脑图不能独立划分,所以看起来像父子类关系。
 
