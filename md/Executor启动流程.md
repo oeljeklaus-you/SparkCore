@@ -2,6 +2,8 @@
 
 在上面SparkContext进行资源调度后,只有主要的流程是Master和筛选出来的Worker进行通信,然后在Worker中启动Executor进程。
 
+## Executor启动流程流程图
+![Woker启动Executor过程并向Driver注册](../image/Woker启动Executor过程并向Driver注册.jpg)
 ## 源码分析
 ### Executor进程的启动
 这里我们需要追踪的方法是Master类中的schedule()方法内部的607行,这个方法的主要作用是向Worker发送消息,然后启动Executor进程。
