@@ -1,6 +1,8 @@
 # SparkContext内部执行流程
 ## SparkContext内部执行的时序图
-![SparkSubmit的大概流程](image/SparkSubmit的大概流程.png)
+
+![SparkSubmit的大概流程](image/SparkSubmit的大概流程.jpg)
+
 对于这个时序图的具体描述如下:
 
 1.SparkSubmit在main()方法中执行，然后根据提交的类型调用相应的方法，这里是"Submit"，调用submit()方法，submit()里面进行一些判断后，
