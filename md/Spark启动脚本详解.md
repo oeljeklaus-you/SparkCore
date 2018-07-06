@@ -90,7 +90,8 @@ spark-class脚本做的工作主要是进行Java环境的配置和比较，以�
 exec "$SPARK_HOME"/bin/spark-class org.apache.spark.deploy.SparkSubmit "${ORIG_ARGS[@]}"
 </code></pre>
 从上面的脚本可以看出,这里主要调用org.apache.spark.deploy.SparkSubmit,这是Spark程序执行的入口类，所以我们
+
 将会从这个程序开始进行源码分析。
 
-##总结
+## 总结
 通过Shell脚本启动Spark集群,在提交作业时,使用org.apache.spark.deploy.SparkSubmit对作业进程提交。
