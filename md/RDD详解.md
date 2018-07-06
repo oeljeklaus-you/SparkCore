@@ -29,10 +29,10 @@ val rdd2 = sc.textFile("hdfs://node1:9000/words.txt")
 
 ## RDD编程API
 
-###Transformation
+### Transformation
 
    RDD中的所有转换都是延迟加载的，也就是说，它们并不会直接计算结果。相反的，它们只是记住这些应用到基础数据集（例如一个文件）上的转换动作。只有当发生一个要求返回结果给Driver的动作时，这些转换才会真正运行。这种设计让Spark更加有效率地运行。
-![RDD的Transformation](image/Tansformation.png)
+![RDD的Transformation](../image/Transformation.png)
 ### Action
-![RDD的Action](image/Action.png)
+![RDD的Action](../image/Action.png)
 
