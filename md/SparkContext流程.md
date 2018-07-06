@@ -338,11 +338,11 @@ override def start() {
 </code></pre>
 从上面的代码可以看出首先调用父类(**CoarseGrainedSchedulerBackend**)的start()方法,然后对于一些重要的参数进行封装,这里最重要的参数是
 
-CoarseGrainedExecutorBackend类，还有一些driverUrl和WORKER_URL等参数的封装,将CoarseGrainedExecutorBackend封装成Command,这是一个样例类,不知道
+CoarseGrainedExecutorBackend类，还有一些driverUrl和WORKER_URL等参数的封装,将CoarseGrainedExecutorBackend
 
-样例类[请点击这里](https://blog.csdn.net/oeljeklaus/article/details/80559180),将这个参数封装成为一个ApplicationDescription对象，创建一个
+封装成Command,这是一个样例类,不知道样例类[请点击这里](https://blog.csdn.net/oeljeklaus/article/details/80559180),将这个参数封装成为一个
 
-AppClient对象,这个对象主要用于Driver和Master之间的通信,以下我们分析start()方法后再分析client.start()。
+ApplicationDescription对象，创建一个AppClient对象,这个对象主要用于Driver和Master之间的通信,以下我们分析start()方法后再分析client.start()。
 <pre><code>
 override def start() {
     val properties = new ArrayBuffer[(String, String)]
