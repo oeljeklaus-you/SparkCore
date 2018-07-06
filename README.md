@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 # Spark(基于1.3.1)源码分析
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要针对于Spark源码分析，对于比较重要的方法和代码,有注释,在熟悉Spark源码之前,首先必须了解Akka的通信,
 
 如果不了解的可以看一下我的Demo,点击这里[SPRC](https://github.com/oeljeklaus-you/SPRC) ,这里主要进行的源码分析是:Spark集群启动的脚本、Spark作业提交
+=======
+# Spark核心源码解析
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主要针对于Spark核心源码解析，对于比较重要的方法和代码,有注释,在熟悉Spark源码之前,首先必须了解Akka的通信,
+
+如果不了解的可以看一下我的Demo,点击这里[SPRC](https://github.com/oeljeklaus-you/SPRC) ,这里主要进行的源码分析是:Spark集群启动的脚本、Spark作业提交
+
+的脚本、Spark作业提交中SparkContext、Spark中SparkContext、Executor进程启动的流程、结合简单的WordCount程序
+
+对于RDD执行流程进行剖析以及进行Stage划分分析和Task提交。
+## 启动的脚本
+>>>>>>> 8daa3625536331ebc83e170786e59d75ee843f9a
 
 的脚本、Spark作业提交中SparkContext、Spark中SparkContext、Executor进程启动的流程、结合简单的WordCount程序
 
@@ -37,5 +49,5 @@
 
 ## 结合WordCount的Stage划分
 
-
 ## 任务提交流程
+
