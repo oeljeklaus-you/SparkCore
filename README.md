@@ -93,3 +93,68 @@ Task如何提交到Executor执行。
 2.Executor执行Task,创建一个TaskRunner对象将Task的信息封装信息然后使用线程池执行
 
 ## Spark2.0新特性
+### Spark Core&Spark SQL API
+dataframe与dataset统一，dataframe只是dataset[Row]的类型别名
+
+SparkSession：统一SQLContext和HiveContext，新的上下文入口
+### Spark Core&Spark SQL
+支持sql 2003标准
+
+支持子查询：in/not in、exists/not exists
+### Spark Core&Spark SQL new feature
+支持缓存和程序运行的堆外内存管理
+
+支持近似概要统计，包括近似分位数、布隆过滤器、最小略图
+### Spark Core&Spark SQL 性能
+通过whole-stage code generation技术将spark sql和dataset的性能提升2~10倍
+
+通过vectorization技术提升parquet文件的扫描吞吐量
+### Spark MLlib
+spark mllib未来将主要基于dataset api来实现，基于rdd的api转为维护阶段
+### Spark Streaming
+发布测试版的structured streaming
+  * 基于spark sql和catalyst引擎构建
+
+  * 支持使用dataframe风格的api进行流式计算操作
+
+  * catalyst引擎能够对执行计划进行优化
+### 依赖管理、打包和操作
+使用scala 2.11替代了scala 2.10
+
+mesos粗粒度模式下，支持启动多个executor
+### 移除功能
+* bagel模块
+
+* 对hadoop 2.1以及之前版本的支持
+
+* 闭包序列化配置的支持
+
+* HTTPBroadcast支持
+
+* 基于TTL模式的元数据清理支持
+
+* 半私有的org.apache.spark.Logging的使用支持
+
+* SparkContext.metricsSystem API
+
+* 与tachyon的面向block的整合支持
+
+* spark 1.x中标识为过期的所有api
+
+* python dataframe中返回rdd的方法
+
+* 使用很少的streaming数据源支持：twitter、akka、MQTT、ZeroMQ
+
+* hash-based shuffle manager
+
+* standalone master的历史数据支持功能
+
+* dataframe不再是一个类，而是dataset[Row]的类型别名
+### 变化的机制
+要求基于scala 2.11版本进行开发，而不是scala 2.10版本
+
+kryo版本升级到了3.0
+### 过期的API
+java 7支持标识为过期，可能2.x未来版本会移除支持
+
+mesos的细粒度模式
