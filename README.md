@@ -158,7 +158,3 @@ kryo版本升级到了3.0
 java 7支持标识为过期，可能2.x未来版本会移除支持
 
 mesos的细粒度模式
-##  微信公众号
-更多知识，请关注微信公众号:*程序猿技术*
-
-![程序猿技术](https://github.com/oeljeklaus-you/UserActionAnalyzePlatform/blob/master/2019_02_22_1933083452.png)
